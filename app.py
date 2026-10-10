@@ -1,6 +1,14 @@
-from flask import Flask
+import asyncio
 import threading
-import main  # Yeh aapke bot ko background mein chalu karega
+from flask import Flask
+
+# Pyrogram aur Python 3.14 ke event loop error ko fix karne ke liye
+try:
+    asyncio.get_event_loop()
+except RuntimeError:
+    asyncio.set_event_loop(asyncio.new_event_loop())
+
+import main  # Yeh aapke downloader bot ko background mein chalu karega
 
 app = Flask(__name__)
 
@@ -8,10 +16,5 @@ app = Flask(__name__)
 def home():
     return "Bot is running live!"
 
-def run_bot():
-    # Agar aapke main.py mein app.run() hai toh theek, nahi toh Pyrogram client start hoga
-    pass
-
 if __name__ == "__main__":
-    # Web server ko start karna taaki Render free tier active rakhe
     app.run(host="0.0.0.0", port=10000)
